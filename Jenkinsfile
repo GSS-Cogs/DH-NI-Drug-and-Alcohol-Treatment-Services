@@ -19,11 +19,27 @@ pipeline {
                 sh "jupyter-nbconvert --output-dir=out --execute 'main.ipynb'"
             }
         }
+        stage('Test') {
+            agent {
+                docker {
+                    image 'cloudfluff/csvlint'
+                    reuseNode true
+                }
+            }
+            steps {
+                script {
+                    ansiColor('xterm') {
+                        sh "csvlint -s schema.json"
+                    }
+                }
+            }
+        }
         stage('Upload draftset') {
             steps {
                 script {
                     jobDraft.replace()
-                    uploadTidy(['observations.csv'])
+                    uploadTidy(['observations.csv'],
+                               'https://ons-opendata.github.io/ref_alcohol/columns.csv')
                 }
             }
         }
@@ -37,7 +53,10 @@ pipeline {
     }
     post {
         always {
-            archiveArtifacts 'out/*'
+            script {
+                archiveArtifacts 'out/*'
+                updateCard '5b4f390047d6cd47278ec0ec'
+            }
         }
         success {
             build job: '../GDP-tests', wait: false
