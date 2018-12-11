@@ -30,15 +30,15 @@
           },
           "required": true
         }, {
-          "titles": "Age",
-          "name": "age",
-          "required": true
-        }, {
           "titles": "Sex",
           "name": "sex",
           "datatype": {
             "format": "^(T|F|M)$"
           },
+          "required": true
+        }, {
+          "titles": "Age",
+          "name": "age",
           "required": true
         }, {
           "titles": "Service Type",
@@ -72,19 +72,19 @@
           "titles": "Measure Type",
           "name": "measure_type",
           "datatype": {
-            "format": "^Count$"
+            "format": "^Count|Percentage$"
           },
-          "required": true
-        }, {
-          "titles": "Value",
-          "name": "value",
           "required": true
         }, {
           "titles": "Unit",
           "name": "unit",
           "datatype": {
-            "format": "^people$"
+            "format": "^People$"
           },
+          "required": true
+        }, {
+          "titles": "Value",
+          "name": "value",
           "required": true
         }],
         "foreignKeys": [{
