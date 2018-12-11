@@ -119,7 +119,8 @@
           }
         }],
         "primaryKey": [
-          "period", "severity", "measure_type", "value", "unit", "revision"
+          "period", "age", "sex", "service_type", "residential_status", "treatment_type", "trust",
+          "measure_type", "unit"
         ]
       }
     }
