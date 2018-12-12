@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                     jobDraft.replace()
-                    uploadTidy(['observations.csv'],
+                    uploadTidy(['out/observations.csv'],
                                'https://ons-opendata.github.io/ref_alcohol/columns.csv')
                 }
             }
