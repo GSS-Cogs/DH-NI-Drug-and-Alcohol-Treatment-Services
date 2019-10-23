@@ -8,22 +8,22 @@
   "tables": [
     {
       "url": "https://gss-cogs.github.io/ref_alcohol/codelists/service-type.csv",
-      "tableSchema": "https://gss-cogs.github.io/ref_common/codelist-schema.json",
+      "tableSchema": "https://gss-cogs.github.io/ref_alcohol/codelist-schema.json",
       "suppressOutput": true
     },
     {
       "url": "https://gss-cogs.github.io/ref_alcohol/codelists/residential-status.csv",
-      "tableSchema": "https://gss-cogs.github.io/ref_common/codelist-schema.json",
+      "tableSchema": "https://gss-cogs.github.io/ref_alcohol/codelist-schema.json",
       "suppressOutput": true
     },
     {
       "url": "https://gss-cogs.github.io/ref_alcohol/codelists/treatment-type.csv",
-      "tableSchema": "https://gss-cogs.github.io/ref_common/codelist-schema.json",
+      "tableSchema": "https://gss-cogs.github.io/ref_alcohol/codelist-schema.json",
       "suppressOutput": true
     },
     {
       "url": "https://gss-cogs.github.io/ref_alcohol/codelists/health-social-care-trusts.csv",
-      "tableSchema": "https://gss-cogs.github.io/ref_common/codelist-schema.json",
+      "tableSchema": "https://gss-cogs.github.io/ref_alcohol/codelist-schema.json",
       "suppressOutput": true
     },
     {
