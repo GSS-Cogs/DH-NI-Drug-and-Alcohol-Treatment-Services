@@ -26,7 +26,7 @@ tabs
 
 tables = []
 for tab_name, script in [
-    ('Table 1', 'Treatment Services by Age and Gender.ipynb'),
+    ('Table 1', 'Treatment Services by Age and Gender.py'),
     ('Table 2', 'Treatment Services by Service Type(Age).py'),
     ('Table 2', 'Treatment Services by Service Type(sex).py'),
     ('Table 3', 'Treatment Services by Residential status(Age).py'),

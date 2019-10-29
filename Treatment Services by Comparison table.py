@@ -16,28 +16,10 @@
 # Census of Drug and Alcohol Treatment Type Services in Northern Ireland:Table 5 Comparison table
 
 from gssutils import *
-import numpy
-if is_interactive():
-    import requests
-    
-    from cachecontrol import CacheControl
-    from cachecontrol.caches.file_cache import FileCache
-    from cachecontrol.heuristics import LastModified
-    from pathlib import Path
+scraper = Scraper('https://www.health-ni.gov.uk/publications/census-drug-and-alcohol-treatment-services-northern-ireland-2017')
+scraper
 
-    session = CacheControl(requests.Session(),
-                           cache=FileCache('.cache'),
-                           heuristic=LastModified())
-
-    sourceFolder = Path('in')
-    sourceFolder.mkdir(exist_ok=True)
-
-    inputURL = 'https://www.health-ni.gov.uk/sites/default/files/publications/dhssps/data-census-drug-alcohol-treatment-services.xlsx'
-    inputFile = sourceFolder / 'data-census-drug-alcohol-Treatment Type-services.xlsx'
-    response = session.get(inputURL)
-    with open(inputFile, 'wb') as f:
-      f.write(response.content)
-    tab = loadxlstabs(inputFile, sheetids='Table 5')[0]
+tab = next(t for t in scraper.distributions[1].as_databaker() if t.name == 'Table 5')
 
 observations = tab.excel_ref('B6').expand(DOWN).expand(RIGHT).is_not_blank() - tab.excel_ref('J8').expand(DOWN).expand(RIGHT)  
 
@@ -97,6 +79,8 @@ new_table['Treatment Type'] = new_table['Treatment Type'].str.strip() #Get rid o
 new_table['Treatment Type'].fillna('All', inplace = True)
 
 # +
+import numpy
+
 new_table['Service Type'] = 'All'
 new_table['Residential Status'] = 'All'
 new_table['Health and Social Care Trust']  = 'All'

@@ -17,40 +17,19 @@
 # Census of Drug and Alcohol Treatment Services in Northern Ireland:Table 4 – Breakdown by Trust
 
 from gssutils import *
-if is_interactive():
-    import requests
-    from cachecontrol import CacheControl
-    from cachecontrol.caches.file_cache import FileCache
-    from cachecontrol.heuristics import LastModified
-    from pathlib import Path
+scraper = Scraper('https://www.health-ni.gov.uk/publications/census-drug-and-alcohol-treatment-services-northern-ireland-2017')
+scraper
 
-    session = CacheControl(requests.Session(),
-                           cache=FileCache('.cache'),
-                           heuristic=LastModified())
-
-    sourceFolder = Path('in')
-    sourceFolder.mkdir(exist_ok=True)
-
-    inputURL = 'https://www.health-ni.gov.uk/sites/default/files/publications/dhssps/data-census-drug-alcohol-treatment-services.xlsx'
-    inputFile = sourceFolder / 'data-census-drug-alcohol-treatment-services.xlsx'
-    response = session.get(inputURL)
-    with open(inputFile, 'wb') as f:
-      f.write(response.content)
-    tab = loadxlstabs(inputFile, sheetids='Table 4')[0]
+tab = next(t for t in scraper.distributions[1].as_databaker() if t.name == 'Table 4')
 
 observations = tab.excel_ref('B6').expand(DOWN).expand(RIGHT).is_not_blank() - tab.excel_ref('B20').expand(DOWN).expand(RIGHT)  
 
 
-observations
-
 Service = tab.excel_ref('A5').expand(DOWN).is_not_blank()
-Service
 
 Treatment = tab.excel_ref('B4').expand(RIGHT).is_not_blank()
-Treatment
 
 sex = tab.excel_ref('B3').expand(RIGHT).is_not_blank()
-sex
 
 Dimensions = [
             HDim(Treatment,'Treatment Type',DIRECTLY,ABOVE),
@@ -70,15 +49,7 @@ new_table
 
 new_table.columns = ['Value' if x=='OBS' else x for x in new_table.columns]
 
-new_table.dtypes
-
-new_table.tail(5)
-
-new_table.count()
-
 new_table = new_table[new_table['Value'] !=  0 ]
-
-new_table.count()
 
 new_table['Treatment Type'].fillna('Total', inplace = True)
 

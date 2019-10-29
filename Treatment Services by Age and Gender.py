@@ -16,39 +16,18 @@
 # Census of Drug and Alcohol Treatment Services in Northern Ireland:Breakdown by Age and Gender
 
 from gssutils import *
-if is_interactive():
-    import requests
-    from cachecontrol import CacheControl
-    from cachecontrol.caches.file_cache import FileCache
-    from cachecontrol.heuristics import LastModified
-    from pathlib import Path
+scraper = Scraper('https://www.health-ni.gov.uk/publications/census-drug-and-alcohol-treatment-services-northern-ireland-2017')
+scraper
 
-    session = CacheControl(requests.Session(),
-                           cache=FileCache('.cache'),
-                           heuristic=LastModified())
-
-    sourceFolder = Path('in')
-    sourceFolder.mkdir(exist_ok=True)
-
-    inputURL = 'https://www.health-ni.gov.uk/sites/default/files/publications/dhssps/data-census-drug-alcohol-treatment-services.xlsx'
-    inputFile = sourceFolder / 'data-census-drug-alcohol-treatment-services.xlsx'
-    response = session.get(inputURL)
-    with open(inputFile, 'wb') as f:
-      f.write(response.content)
-    tab = loadxlstabs(inputFile, sheetids='Table 1')[0]
+tab = next(t for t in scraper.distributions[1].as_databaker() if t.name == 'Table 1')
 
 observations = tab.excel_ref('B5').expand(DOWN).expand(RIGHT).is_not_blank()
 
-observations
-
 age = tab.excel_ref('B3').expand(RIGHT).is_not_blank()
-age
 
 Treatment = tab.excel_ref('B4').expand(RIGHT)
-Treatment
 
-sex = tab.excel_ref('A5').expand(DOWN) - tab.excel_ref('A13').expand(DOWN)  
-sex
+sex = tab.excel_ref('A5').expand(DOWN) - tab.excel_ref('A13').expand(DOWN)
 
 Dimensions = [
             HDim(Treatment,'Treatment Type',CLOSEST,LEFT), # Changed from DIRECTLY,ABOVE due to merged cells - Lperryman
@@ -69,10 +48,6 @@ new_table.loc[new_table['Treatment Type'] == '', 'Treatment Type'] = 'Total'
 new_table
 
 new_table.columns = ['Value' if x=='OBS' else x for x in new_table.columns]
-
-new_table.dtypes
-
-new_table.tail(5)
 
 
 # +
@@ -103,11 +78,7 @@ new_table['Service Type'] = 'all'
 new_table['Residential Status'] = 'all'
 new_table['Health and Social Care Trust']  = 'all'
 
-new_table.head(1)
-
 new_table = new_table[['Period', 'Sex', 'Age', 'Service Type', 'Residential Status', 'Treatment Type', 'Health and Social Care Trust', 'Measure Type', 'Unit', 'Value']]
-
-new_table
 
 # +
 #new_table.to_csv('testCompare.csv', index = False)
