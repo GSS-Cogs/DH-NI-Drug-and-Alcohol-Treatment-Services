@@ -106,9 +106,6 @@ tidy['Measure Type'] = tidy.apply(lambda row: user_perc(row['Residential Status'
 
 
 # +
-#tidy['Health and Social Care Trust'].unique()
-
-# +
 def user_perc(x,y):
     
     if ( (str(x) == 'Belfast (%)')) | ((str(x) == 'Northern (%)')) | ((str(x) == 'South Eastern (%)')) | ((str(x) == 'Southern (%)')) | ((str(x) == 'Western (%)')) | ((str(x) == 'Emergency admissions (HIS) (%)')) : 
@@ -136,15 +133,12 @@ tidy['Health and Social Care Trust'] = tidy['Health and Social Care Trust'].str.
 
 tidy['Health and Social Care Trust'] = tidy['Health and Social Care Trust'].str.lower()
 
-# +
-#tidy['Health and Social Care Trust'].unique()
-# -
-
 tidy['Health and Social Care Trust'] = tidy['Health and Social Care Trust'].map(
     lambda x: {
         'south eastern' : 'south-eastern', 
         'emergency admissions (his)' : 'emergency-admissions',
-        'emergency admissions (his' : 'emergency-admissions'
+        'emergency admissions (his' : 'emergency-admissions',
+        'belfast + northern + south eastern + southern + western' :'belfast-northern-south-eastern-southern-western',
         }.get(x, x))
 
 tidy['Measure Type'] = tidy['Measure Type'].map(
@@ -153,9 +147,14 @@ tidy['Measure Type'] = tidy['Measure Type'].map(
         'Percentage of Headcount' : 'Percentage',
         }.get(x, x))
 
+tidy['Treatment Type'] = tidy['Treatment Type'].map(
+    lambda x: {
+        'Alcohol Only' : 'alcohol-only', 
+        'Drugs Only' : 'drugs-only', 
+        'Drugs & Alcohol': 'alcohol-and-drug', 
+        'Total': 'total'
+        }.get(x, x))
 
-# +
-#tidy['Sex'].unique()
 
 # +
 def user_perc(x,y):
@@ -178,12 +177,11 @@ tidy['Sex'] = tidy['Sex'].map(
         'Persons' : 'T',
         'Female  ' : 'F',
         'Male (%)' : 'M',
-        'Female (%)': 'F'
+        'Female (%)': 'F',
+        'All' : 'T'
         }.get(x, x))
 
 tidy['Sex'] = tidy['Sex'].str.rstrip('(%)')
-
-tidy['Service Type'].unique()
 
 tidy['Service Type'] = tidy['Service Type'].map(
     lambda x: {
@@ -206,7 +204,8 @@ tidy['Health and Social Care Trust'] = tidy['Health and Social Care Trust'].map(
 
 tidy['Residential Status'] = tidy['Residential Status'].map(
     lambda x: {
-        'total' : 'all' 
+        'total' : 'all',
+        'non-residential / mixed' : 'non-residential-mixed'        
         }.get(x, x))
 
 from pathlib import Path
