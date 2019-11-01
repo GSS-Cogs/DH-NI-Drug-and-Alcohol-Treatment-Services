@@ -151,7 +151,7 @@ tidy['Treatment Type'] = tidy['Treatment Type'].map(
     lambda x: {
         'Alcohol Only' : 'alcohol-only', 
         'Drugs Only' : 'drugs-only', 
-        'Drugs & Alcohol': 'alcohol-and-drug', 
+        'Drugs & Alcohol': 'alcohol-and-drugs', 
         'Total': 'total'
         }.get(x, x))
 
@@ -211,6 +211,7 @@ tidy['Residential Status'] = tidy['Residential Status'].map(
 from pathlib import Path
 out = Path('out')
 out.mkdir(exist_ok=True)
+tidy.drop_duplicates(inplace = True)
 tidy.to_csv(out / 'observations.csv', index = False)
 #tidy.to_csv('testCompare.csv', index = False)
 #tidy['Treatment Type'].unique()
