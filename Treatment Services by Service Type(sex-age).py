@@ -21,27 +21,24 @@ scraper
 
 tab = next(t for t in scraper.distributions[1].as_databaker() if t.name == 'Table 2')
 
-observations = tab.excel_ref('B6').expand(DOWN).expand(RIGHT).is_not_blank() - tab.excel_ref('B12').expand(DOWN).expand(RIGHT)  
-
-
 Service = tab.excel_ref('A5').expand(DOWN).is_not_blank()
 
-age = tab.filter(contains_string('18')).expand(DOWN).is_number()
+age = tab.filter(contains_string('18'))
 
-observations = observations - tab.filter(contains_string('18')).expand(DOWN).is_number()
+observations = tab.filter(contains_string('18')).expand(DOWN).is_number()- tab.excel_ref('B12').expand(DOWN).expand(RIGHT)
 
 Treatment = tab.excel_ref('B4').expand(RIGHT).is_not_blank()
 
 sex = tab.excel_ref('B3').expand(RIGHT).is_not_blank()
 
 Dimensions = [
-            HDim(Treatment,'Treatment Type',DIRECTLY,ABOVE),
+            HDimConst('Treatment Type','All'),
             HDim(Service,'Service Type',DIRECTLY,LEFT),
             HDim(sex,'Sex',CLOSEST,LEFT),
             HDimConst('Measure Type', 'Count'),
             HDimConst('Unit','People'),
             HDimConst('Period','1 March 2017'),
-            HDimConst('Age','All')
+            HDim(age,'Age',DIRECTLY,ABOVE)
             ]
 
 c1 = ConversionSegment(observations, Dimensions, processTIMEUNIT=True)

@@ -25,6 +25,8 @@ tab = next(t for t in scraper.distributions[1].as_databaker() if t.name == 'Tabl
 observations = tab.excel_ref('B6').expand(DOWN).expand(RIGHT).is_not_blank() - tab.excel_ref('B20').expand(DOWN).expand(RIGHT)  
 
 
+observations = observations - tab.filter(contains_string('18')).expand(DOWN).is_number()
+
 Service = tab.excel_ref('A5').expand(DOWN).is_not_blank()
 
 Treatment = tab.excel_ref('B4').expand(RIGHT).is_not_blank()
@@ -42,7 +44,7 @@ Dimensions = [
             ]
 
 c1 = ConversionSegment(observations, Dimensions, processTIMEUNIT=True)
-# savepreviewhtml(c1)
+savepreviewhtml(c1)
 
 new_table = c1.topandas()
 new_table
@@ -61,6 +63,6 @@ new_table['Residential Status'] = 'All'
 
 new_table = new_table[['Period', 'Sex', 'Age', 'Service Type', 'Residential Status', 'Treatment Type', 'Health and Social Care Trust', 'Measure Type', 'Unit', 'Value']]
 
-new_table
+new_table['Treatment Type'].unique()
 
 

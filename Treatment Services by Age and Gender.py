@@ -82,3 +82,8 @@ new_table = new_table[['Period', 'Sex', 'Age', 'Service Type', 'Residential Stat
 
 # +
 #new_table.to_csv('testCompare.csv', index = False)
+# -
+
+new_table['Age'].unique()
+
+

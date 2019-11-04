@@ -41,7 +41,7 @@ Dimensions = [
             ]
 
 c1 = ConversionSegment(observations, Dimensions, processTIMEUNIT=True)
-# savepreviewhtml(c1)
+savepreviewhtml(c1)
 
 new_table = c1.topandas()
 new_table.loc[new_table['Age'] == 'Treatment Type', 'Age'] = 'All Ages'

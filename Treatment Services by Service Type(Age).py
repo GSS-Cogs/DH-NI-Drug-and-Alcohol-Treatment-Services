@@ -78,4 +78,6 @@ import numpy
 new_table['Treatment Type'] = numpy.where(new_table['Treatment Type'] == '', 'Total', new_table['Treatment Type'])
 #new_table.to_csv('testCompare.csv', index = False)
 
+new_table['Treatment Type'].unique()
+
 

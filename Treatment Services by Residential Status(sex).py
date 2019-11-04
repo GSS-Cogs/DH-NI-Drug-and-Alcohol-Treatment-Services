@@ -25,9 +25,11 @@ tab = next(t for t in scraper.distributions[1].as_databaker() if t.name == 'Tabl
 observations = tab.excel_ref('B6').expand(DOWN).expand(RIGHT).is_not_blank() - tab.excel_ref('B12').expand(DOWN).expand(RIGHT)  
 
 
+observations = observations - tab.filter(contains_string('18')).expand(DOWN).is_number()
+
 Service = tab.excel_ref('A5').expand(DOWN).is_not_blank()
 
-Treatment = tab.excel_ref('B4').expand(RIGHT).is_not_blank()
+Treatment = tab.excel_ref('B4').expand(RIGHT).is_not_blank() 
 
 sex = tab.excel_ref('B3').expand(RIGHT).is_not_blank()
 
@@ -42,7 +44,7 @@ Dimensions = [
             ]
 
 c1 = ConversionSegment(observations, Dimensions, processTIMEUNIT=True)
-# savepreviewhtml(c1)
+savepreviewhtml(c1)
 
 new_table = c1.topandas()
 new_table
@@ -59,3 +61,8 @@ new_table = new_table[['Period', 'Sex', 'Age', 'Service Type', 'Residential Stat
 
 # +
 #new_table.to_csv('testCompare.csv', index = False)
+# -
+
+new_table['Treatment Type'].unique()
+
+

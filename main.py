@@ -31,6 +31,7 @@ for tab_name, script in [
     ('Table 2', 'Treatment Services by Service Type(sex).py'),
     ('Table 3', 'Treatment Services by Residential status(Age).py'),
     ('Table 3', 'Treatment Services by Residential Status(sex).py'),
+    ('Table 3', 'Treatment Services by Residential Status(sex-Age).py'),
     ('Table 4', 'Treatment Services by Trust(Age).py'),
     ('Table 4', 'Treatment Services by Trust(sex).py'),
     ('Table 5', 'Treatment Services by Comparison table.py')
@@ -68,10 +69,13 @@ tidy['Period'] = str('day/') + tidy['Period']
 tidy['Age'] = tidy['Age'].map(
     lambda x: {
         'Under 18 ' : 'under-18', 
+        'Under 18' : 'under-18',
+        'Under 18s' : 'under-18',        
         '18 and over' : '18-plus',
         'All years': 'all' ,
         'All': 'all',
-        'All Ages': 'all'
+        'All Ages': 'all',
+        'Overall Total' : 'all'
         }.get(x, x))
 
 
@@ -207,6 +211,9 @@ tidy['Residential Status'] = tidy['Residential Status'].map(
         'total' : 'all',
         'non-residential / mixed' : 'non-residential-mixed'        
         }.get(x, x))
+
+tidy = tidy[tidy['Service Type'] !=  'prison' ]
+tidy = tidy[tidy['Health and Social Care Trust'] !=  'prison' ]
 
 from pathlib import Path
 out = Path('out')

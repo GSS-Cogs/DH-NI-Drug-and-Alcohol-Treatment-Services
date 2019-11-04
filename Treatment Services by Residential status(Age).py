@@ -41,7 +41,7 @@ Dimensions = [
             ]
 
 c1 = ConversionSegment(observations, Dimensions, processTIMEUNIT=True)
-# savepreviewhtml(c1)
+savepreviewhtml(c1)
 
 new_table = c1.topandas()
 new_table.loc[new_table['Age'] == 'Treatment Type', 'Age'] = 'All Ages'
@@ -74,3 +74,7 @@ new_table['Service Type'] = 'All'
 new_table['Health and Social Care Trust']  = 'All'
 
 new_table = new_table[['Period', 'Sex', 'Age', 'Service Type', 'Residential Status', 'Treatment Type', 'Health and Social Care Trust', 'Measure Type', 'Unit', 'Value']]
+
+new_table['Treatment Type'].unique()
+
+
