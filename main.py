@@ -215,8 +215,10 @@ tidy['Residential Status'] = tidy['Residential Status'].map(
 tidy = tidy[tidy['Service Type'] !=  'prison' ]
 tidy = tidy[tidy['Health and Social Care Trust'] !=  'prison' ]
 
-tidy
 tidy.rename(columns={'Residential Status':'NI Residential Status'}, inplace=True)
+tidy.rename(columns={'Service Type':'NI Service Type'}, inplace=True)
+tidy.rename(columns={'Treatment Type':'NI Treatment Type'}, inplace=True)
+tidy
 
 from pathlib import Path
 out = Path('out')
@@ -270,3 +272,6 @@ schema.create(out / 'observations.csv', out / 'observations.csv-schema.json')
 
 # +
 # tidy.to_csv('testCompare.csv', index = False)
+# -
+
+
